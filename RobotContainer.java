@@ -7,8 +7,8 @@ package frc.robot;
 //import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ArmSubsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -53,12 +53,14 @@ public class RobotContainer {
     // cancelling on release.
    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
+
+  
   private void setDefaultCommands(){
     this.m_exampleSubsystem.setDefaultCommand(
       this.m_exampleSubsystem.exampleDefaultCommand()
     );
     this.m_ArmSubsystem.setDefaultCommand(
-      this.m_ArmSubsystem.RunShoulderToAngle(100)
+      this.m_ArmSubsystem.RunJointsToAngles(0,90,15,3)
     );
   }
 
@@ -70,6 +72,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     //return Autos.exampleAuto(m_exampleSubsystem);
-    return m_ArmSubsystem.homeShoulder().until(m_ArmSubsystem::exampleCondition);
+    return m_ArmSubsystem.homeAll().until(m_ArmSubsystem::exampleCondition);
   }
 }

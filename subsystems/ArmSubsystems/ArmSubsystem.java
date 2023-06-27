@@ -1,5 +1,6 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.ArmSubsystems;
 
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import java.util.function.DoubleSupplier;
@@ -9,93 +10,76 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  // Define all of the motors
-  SparkmaxMotor AzimuthMotor = new SparkmaxMotor(ArmConstants.AZIMUTH_MOTOR_ID, ArmConstants.AZIMUTH_LIMIT_SWITH_DIRECTION,0.3, 0.3);
-  public static SparkmaxMotor ShoulderMotor = new SparkmaxMotor(ArmConstants.SHOULDER_MOTOR_ID, ArmConstants.SHOULDER_LIMIT_SWITCH_DIRECTION,0.3, 0.3);
-  SparkmaxMotor ElbowMotor = new SparkmaxMotor(ArmConstants.ELBOW_MOTOR_ID, ArmConstants.ELBOW_LIMIT_SWITCH_DIRECTION,0.4,0.4);
-  SparkmaxMotor ClawMotor = new SparkmaxMotor(ArmConstants.CLAW_MOTOR_ID, ArmConstants.CLAW_LIMIT_SWITCH_DIRECTION,0.5,0.2); 
+  // Define all of the Joints
+  // public Joint(int deviceID,Boolean limitSwitchDirection, 
+  // double l_max_output, double l_min_output, 
+  // double l_homingSpeed, int l_startingAngle,
+  // int l_maxAngle, int l_minAngle,
+  // int l_homePositionAngle, double l_degreesPerRev){
+  private static Joint ShoulderJoint = new Joint(ArmConstants.SHOULDER_MOTOR_ID, ArmConstants.SHOULDER_LIMIT_SWITCH_DIRECTION,
+  ArmConstants.SHOULDER_JOINT_SPEED,ArmConstants.SHOULDER_JOINT_SPEED,
+  ArmConstants.SHOULDER_HOMING_SPEED, ArmConstants.THETA1_START_OFFSET,
+  ArmConstants.THETA1_MAX, ArmConstants.THETA1_MIN,
+  ArmConstants.THETA1_HOMED_OFFSET, ArmConstants.SHOULDER_DEGREES_PER_REVOLUTION);
+  
+  private static Joint ElbowJoint = new Joint(ArmConstants.ELBOW_MOTOR_ID, ArmConstants.ELBOW_LIMIT_SWITCH_DIRECTION,
+  ArmConstants.ELBOW_JOINT_SPEED,ArmConstants.ELBOW_JOINT_SPEED,
+  ArmConstants.ELBOW_HOMING_SPEED, ArmConstants.THETA2_START_OFFSET,
+  ArmConstants.THETA2_MAX, ArmConstants.THETA2_MIN,
+  ArmConstants.THETA2_HOMED_OFFSET, ArmConstants.ELBOW_DEGREES_PER_REVOLUTION);
 
-  private static float theta1CurrentSetting=ArmConstants.THETA1_START;
-  private int i=0;
-  private boolean ShoulderZeroed=false;
+  private static Joint AzimuthJoint = new Joint(ArmConstants.AZIMUTH_MOTOR_ID, ArmConstants.AZIMUTH_LIMIT_SWITCH_DIRECTION,
+  ArmConstants.AZIMUTH_JOINT_SPEED,ArmConstants.AZIMUTH_JOINT_SPEED,
+  ArmConstants.AZIMUTH_HOMING_SPEED, ArmConstants.AZIMUTH_START_OFFSET,
+  ArmConstants.AZIMUTH_MAX, ArmConstants.AZIMUTH_MIN,
+  ArmConstants.AZIMUTH_HOMED_OFFSET, ArmConstants.AZIMUTH_DEGREES_PER_REVOLUTION);
 
-  private void RunShoulderToPosition(double m_theta1DesiredPos,double m_theta2AnalogOffset, double m_azimuthAnalogOffset,double m_claw) {
-    double m_theta1;//=theta1CurrentSetting;
+  private static Joint ClawJoint = new Joint(ArmConstants.CLAW_MOTOR_ID, ArmConstants.CLAW_LIMIT_SWITCH_DIRECTION,
+  0.5,ArmConstants.CLAW_JOINT_SPEED,//OVERIDE MAX SPEED FOR CLOSING
+  ArmConstants.CLAW_HOMING_SPEED, ArmConstants.CLAW_START_OFFSET,
+  ArmConstants.CLAW_MAX, ArmConstants.CLAW_MIN,
+  ArmConstants.CLAW_HOMED_OFFSET, ArmConstants.CLAW_DEGREES_PER_REVOLUTION);
 
-    //checks for software limits
-    
-      m_theta1= Math.max(98, m_theta1DesiredPos);//set  minimum angle to 98 when arm is within robot frame perimeter
-    
-    //adjustments for offsets and conversions
-    if (ShoulderZeroed){
-      ShoulderMotor.runToposition((-m_theta1+135)/ArmConstants.SHOULDER_DEGREES_PER_REVOLUTION);
-    }else{
-      ShoulderMotor.runToposition((-m_theta1+98)/ArmConstants.SHOULDER_DEGREES_PER_REVOLUTION);
-    }
-
-    
-    
-  }
+      
   public void setArmPosition( float m_theta1, float m_theta2, float m_azimuth) {
-    theta1CurrentSetting=m_theta1;
+    //theta1CurrentSetting=m_theta1;
     // theta2CurrentSetting=m_theta2;  
     // azimuthCurrentSetting=m_azimuth; 
   }
 
-  public CommandBase homeShoulder() {
+  public CommandBase homeAll() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return run(
-      () -> {
-        
-        if(i%2==0){
-          //System.out.println("home "+i);
-          if (!ShoulderZeroed && !ShoulderMotor.limitSwitch.isPressed()) {
-            ShoulderMotor.adjustMaxPID(-0.2, 0.2);
-            if (ArmConstants.SHOULDER_LIMIT_SWITCH_DIRECTION) {
-              //set velocity forward
-              //m_pidControllerVel.setReference(ArmConstants.RESETTING_SPEED, CANSparkMax.ControlType.kVelocity);
-            }else {
-              //set velocity reverse
-              theta1CurrentSetting+=0.5;
-              RunShoulderToPosition(theta1CurrentSetting,0,0,0);
-        
-            }
-          }else{
-            if(ShoulderMotor.limitSwitch.isPressed()){
-              ShoulderMotor.zeroEncoder(); 
-              ShoulderMotor.resetMaxPID();
-              ShoulderZeroed=true;
-              
-            }
-          }
-        }
-      });
+    return run(()->{if(!ShoulderJoint.homedCondition()){ShoulderJoint.homeJoint();}
+    else if(!ElbowJoint.homedCondition()){ElbowJoint.homeJoint();}}).until(ElbowJoint::homedCondition);
+    
 
   }
-  public CommandBase RunShoulderToAngle(double angle) {
+  public CommandBase RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          RunShoulderToPosition(angle,0,0,0);
-       
-          if(i%50==0){
-            System.out.println("default "+i); 
-           }
-        });
+    return runOnce(()->{AzimuthJoint.RunJointToAngle(l_angleAzimuth);
+      ShoulderJoint.RunJointToAngle(l_angleShoulder);
+      ElbowJoint.RunJointToAngle(l_angleElbow);
+    ClawJoint.RunJointToAngle(l_clawPosition);});
   }
 
 
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
-    
-    return ShoulderZeroed;
+    return (ShoulderJoint.homedCondition()&&ElbowJoint.homedCondition());
+  }
+
+  public static void zeroEncodersHere(){//for test
+     ShoulderJoint.zeroEncoder();
+     ShoulderJoint.unhome();
+     ElbowJoint.zeroEncoder();
+     ElbowJoint.unhome();
   }
 
   @Override
   public void periodic() {
-    i++;
+    //i++;
     // This method will be called once per scheduler run
   }
 

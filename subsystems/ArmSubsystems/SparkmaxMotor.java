@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.ArmSubsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.Constants.ArmConstants;
@@ -103,7 +103,7 @@ public class SparkmaxMotor extends SubsystemBase {
   public void zeroEncoder(){
    
     m_encoder.setPosition(0);
-    System.out.println("zeroed ");
+    System.out.println("zeroed "+m_motor.getDeviceId());
     m_pidControllerPos.setReference(0, CANSparkMax.ControlType.kPosition);
     
   }
