@@ -128,6 +128,11 @@ public class Joint extends SparkmaxMotor {
     
      JointZeroed=false;
   }
+  public void forceHomed() {
+    // Query some boolean state, such as a digital sensor.
+    
+     JointZeroed=true;
+  }
 
   @Override
   public void periodic() {

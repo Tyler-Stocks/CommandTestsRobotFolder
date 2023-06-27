@@ -40,6 +40,13 @@ public class ArmSubsystem extends SubsystemBase {
   ArmConstants.CLAW_MAX, ArmConstants.CLAW_MIN,
   ArmConstants.CLAW_HOMED_OFFSET, ArmConstants.CLAW_DEGREES_PER_REVOLUTION);
 
+  public  ArmSubsystem() {
+    //force claw and azimuth into homed condition
+    AzimuthJoint.forceHomed();
+    ClawJoint.forceHomed();
+
+  }
+
       
   public void setArmPosition( float m_theta1, float m_theta2, float m_azimuth) {
     //theta1CurrentSetting=m_theta1;
