@@ -40,12 +40,19 @@ public class ArmSubsystem extends SubsystemBase {
   ArmConstants.CLAW_MAX, ArmConstants.CLAW_MIN,
   ArmConstants.CLAW_HOMED_OFFSET, ArmConstants.CLAW_DEGREES_PER_REVOLUTION);
 
-  public  ArmSubsystem() {
+  
+
+
+  public void initialize() {
     //force claw and azimuth into homed condition
     AzimuthJoint.forceHomed();
     ClawJoint.forceHomed();
 
   }
+  public static double azimuthPosition = 0;
+  public static double shoulderPosition = 100;
+  public static double elbowPosition =15;
+  public static double clawPosition =0;
 
       
   public void setArmPosition( float m_theta1, float m_theta2, float m_azimuth) {
@@ -69,6 +76,14 @@ public class ArmSubsystem extends SubsystemBase {
       ShoulderJoint.RunJointToAngle(l_angleShoulder);
       ElbowJoint.RunJointToAngle(l_angleElbow);
     ClawJoint.RunJointToAngle(l_clawPosition);});
+  }
+  public CommandBase RunJointsToSetPoint() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(()->{AzimuthJoint.RunJointToAngle(azimuthPosition);
+      ShoulderJoint.RunJointToAngle(shoulderPosition);
+      ElbowJoint.RunJointToAngle(elbowPosition);
+    ClawJoint.RunJointToAngle(clawPosition);});
   }
 
 
