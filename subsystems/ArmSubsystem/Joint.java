@@ -1,4 +1,4 @@
-package frc.robot.subsystems.ArmSubsystems;
+package frc.robot.subsystems.ArmSubsystem;
 
 public class Joint extends SparkmaxMotor {
 

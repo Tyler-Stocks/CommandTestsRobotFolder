@@ -1,4 +1,4 @@
-package frc.robot.subsystems.ArmSubsystems;
+package frc.robot.subsystems.ArmSubsystem;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
