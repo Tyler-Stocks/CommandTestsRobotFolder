@@ -1,5 +1,7 @@
 package frc.robot.subsystems.ArmSubsystem;
 
+import java.util.function.IntSupplier;
+
 //import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -56,10 +58,17 @@ public class ArmSubsystem extends SubsystemBase {
   public static double clawPosition =0;
 
       
-  public void setArmPosition( float m_theta1, float m_theta2, float m_azimuth) {
+  private void setArmPosition( double l_azimuth, double l_shoulder, double l_elbow) {
     //theta1CurrentSetting=m_theta1;
     // theta2CurrentSetting=m_theta2;  
     // azimuthCurrentSetting=m_azimuth; 
+  }
+  private void setArmAzimuth(double l_azimuth) {
+    if (l_azimuth>180){
+      l_azimuth-=360;
+    }
+    azimuthPosition = l_azimuth;
+    System.out.println(l_azimuth);
   }
 
   public CommandBase homeAll() {
@@ -112,6 +121,14 @@ public class ArmSubsystem extends SubsystemBase {
      ShoulderJoint.unhome();
      ElbowJoint.zeroEncoder();
      ElbowJoint.unhome();
+  }
+
+  public CommandBase POVInputCommand(IntSupplier l_POVAziumuth) {
+    // A split-stick arcade command, with forward/backward controlled by the left
+    // hand, and turning controlled by the right.
+    return runOnce(() -> this.setArmAzimuth(l_POVAziumuth.getAsInt()))
+        .withName("fine tuning Arm Motor");
+
   }
 
   @Override
