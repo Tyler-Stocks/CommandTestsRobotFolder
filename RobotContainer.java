@@ -61,7 +61,8 @@ public class RobotContainer {
       this.m_exampleSubsystem.exampleDefaultCommand()
     );
     this.m_ArmSubsystem.setDefaultCommand(
-      this.m_ArmSubsystem.RunJointsToAngles(0,90,15,3)
+      //this.m_ArmSubsystem.RunJointsToAngles(0,90,15,3)
+      this.m_ArmSubsystem.RunJointsToSetPoint()
     );
   }
 

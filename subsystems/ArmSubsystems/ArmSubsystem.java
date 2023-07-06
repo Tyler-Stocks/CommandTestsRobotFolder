@@ -85,6 +85,20 @@ public class ArmSubsystem extends SubsystemBase {
       ElbowJoint.RunJointToAngle(elbowPosition);
     ClawJoint.RunJointToAngle(clawPosition);});
   }
+  public CommandBase cumulativeJointsToSetPoint(double l_azimuthAxis,double l_shoulderAxis,double l_elbowAxis,double l_clawTotal) {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    
+    return runOnce(()->{
+      azimuthPosition+= l_azimuthAxis;
+      shoulderPosition += l_shoulderAxis;
+      elbowPosition += l_elbowAxis;
+      clawPosition += l_clawTotal;
+      AzimuthJoint.RunJointToAngle(azimuthPosition);
+      ShoulderJoint.RunJointToAngle(shoulderPosition);
+      ElbowJoint.RunJointToAngle(elbowPosition);
+    ClawJoint.RunJointToAngle(clawPosition);});
+  }
 
 
   public boolean exampleCondition() {

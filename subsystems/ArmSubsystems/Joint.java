@@ -1,13 +1,5 @@
 package frc.robot.subsystems.ArmSubsystems;
 
-// import edu.wpi.first.wpilibj2.command.CommandBase;
-// //import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// //import java.util.function.DoubleSupplier;
-// //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// //import frc.robot.Constants.ArmConstants;
-// import edu.wpi.first.wpilibj2.command.Subsystem;
-
-
 public class Joint extends SparkmaxMotor {
 
   // Define all of the motors
@@ -18,7 +10,7 @@ public class Joint extends SparkmaxMotor {
 
   private int m_maxAngle,m_minAngle,m_homePositionAngle,m_startingAngle;
   
-  private int i=0;
+  //private int i=0;
   private boolean JointZeroed=false;
 
   public Joint(int deviceID,Boolean limitSwitchDirection, 
@@ -54,95 +46,52 @@ public class Joint extends SparkmaxMotor {
     //adjustments for offsets and conversions
     if (JointZeroed){
       runToposition((m_theta1-m_homePositionAngle)/m_degreesPerRev);
-      if(i%50==0){
-        double value1 = (m_theta1);
-        double value2 = (m_theta1-m_homePositionAngle);
-        double value3 = m_degreesPerRev;
-        System.out.println("zeroe d aimed at"+value1 +" v2 "+value2+" v3 "+value3); 
-      };
-
     }else{
       runToposition((m_theta1-m_startingAngle)/m_degreesPerRev);
-      if(i%50==0){
-        double value1 = (m_theta1);
-        double value2 = (m_theta1-m_startingAngle);
-        double value3 = m_degreesPerRev;
-        System.out.println("starting aimed at"+value1 +" v2 "+value2+" v3 "+value3); 
-      };
     }
-
   }
-  public void homeJoint(){
-    if(i%2==0){
-      //System.out.println("home "+i);
-      if (!JointZeroed && !limitSwitch.isPressed()) {
-        adjustMaxPID(-m_homingSpeed, m_homingSpeed);
-        if (!(super.m_limitSwitchDirection^(m_degreesPerRev>0))) {//fancy way to use !XOR to correct for direction of limit switch and motor vs axis in one line
-          //set velocity forward
-          m_thetaCurrentSetting+=0.5;
-          RunJointToPosition(m_thetaCurrentSetting);
-          //m_pidControllerVel.setReference(ArmConstants.RESETTING_SPEED, CANSparkMax.ControlType.kVelocity);
-        }else {
-          //set velocity reverse
-          m_thetaCurrentSetting-=0.5;
-          RunJointToPosition(m_thetaCurrentSetting);
-    
-        }
-      }else{
-        if(limitSwitch.isPressed()){
-          zeroEncoder(); 
-          resetMaxPID();
-          JointZeroed=true;
-          
-        }
+
+  protected void homeJoint(){    
+    if (!JointZeroed && !limitSwitch.isPressed()) {
+      adjustMaxPID(-m_homingSpeed, m_homingSpeed);
+      if (!(super.m_limitSwitchDirection^(m_degreesPerRev>0))) {//fancy way to use !XOR to correct for direction of limit switch and motor vs axis in one line
+        //set velocity forward
+        m_thetaCurrentSetting+=0.5;
+        RunJointToPosition(m_thetaCurrentSetting);
+        //m_pidControllerVel.setReference(ArmConstants.RESETTING_SPEED, CANSparkMax.ControlType.kVelocity);
+      }else {
+        //set velocity reverse
+        m_thetaCurrentSetting-=0.5;
+        RunJointToPosition(m_thetaCurrentSetting);
+  
+      }
+    }else{
+      if(limitSwitch.isPressed()){
+        zeroEncoder(); 
+        resetMaxPID();
+        JointZeroed=true;
+        
       }
     }
-
   }
-
-  // public CommandBase homeJointcommand() {
-  //   // Inline construction of command goes here.
-  //   // Subsystem::RunOnce implicitly requires `this` subsystem.
-  //   return run(
-  //     () -> {homeJoint();});
-
-  // }
-  public void RunJointToAngle(double angle) {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    m_thetaCurrentSetting =angle;
-    
-    RunJointToPosition(m_thetaCurrentSetting);
   
-    
+  protected void RunJointToAngle(double angle) {
+    m_thetaCurrentSetting =angle;    
+    RunJointToPosition(m_thetaCurrentSetting);
   }
 
-
-  public boolean homedCondition() {
-    // Query some boolean state, such as a digital sensor.
-    
+  protected boolean homedCondition() {
+    // Query some boolean state, such as a digital sensor.    
     return JointZeroed;
   }
-  public void unhome() {
-    // Query some boolean state, such as a digital sensor.
-    
+
+  protected void unhome() {
+    // Query some boolean state, such as a digital sensor.    
      JointZeroed=false;
   }
-  public void forceHomed() {
-    // Query some boolean state, such as a digital sensor.
-    
+
+  protected void forceHomed() {
+    // Query some boolean state, such as a digital sensor.    
      JointZeroed=true;
   }
-
-  @Override
-  public void periodic() {
-    i++;
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
-
 }

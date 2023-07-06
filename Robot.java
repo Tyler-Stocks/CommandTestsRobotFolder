@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    ArmSubsystem.zeroEncodersHere();
+    ArmSubsystem.zeroEncodersHere();//*****Remove when done testing
   }
 
   /** This function is called periodically during test mode. */
