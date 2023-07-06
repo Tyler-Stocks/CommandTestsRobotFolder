@@ -52,6 +52,8 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new PrintCommand("exampleCondition"));
+    new Trigger(m_PersonalizedController::povPressed)
+        .onTrue(new PrintCommand("pov Pressed"));
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControl())
       .whileTrue(new ArmFineControlCommand(m_ArmSubsystem));
       //.whileTrue(new PrintCommand("enableFineControl"));

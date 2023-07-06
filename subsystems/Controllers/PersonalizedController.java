@@ -4,6 +4,7 @@ public interface PersonalizedController {
     PersonalizedController getcontroller();
     int[] getbuttons();
     int enableFineControl();
+    boolean povPressed();
 
     
 }

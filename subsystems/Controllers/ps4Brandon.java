@@ -26,5 +26,11 @@ public class ps4Brandon extends PS4Controller implements PersonalizedController 
         // TODO Auto-generated method stub
         return 1;
     }
+
+    @Override
+    public boolean povPressed() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

@@ -18,12 +18,15 @@ import edu.wpi.first.wpilibj.XboxController;
     // kBack(7),
     // kStart(8);
 
+
+
 public class xBoxBrandon extends XboxController implements PersonalizedController {
     int[] buttonMappings = {
         XboxController.Button.kLeftBumper.value,//0 enable fine control //5 left bumper july 5th
         XboxController.Button.kY.value,//4 arm to high score position
         XboxController.Button.kY.value,//4 arm to medium score position
         2};
+    private int m_lastPovValue=-1;
 
     public xBoxBrandon(int port) {
         super(port);
@@ -46,5 +49,25 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
     public int enableFineControl() {
         return buttonMappings[0];
     }
+
+    @Override
+    public boolean povPressed() {
+        int l_pov = getPOV();
+        if(l_pov!=-1 && l_pov!=m_lastPovValue){
+            m_lastPovValue=l_pov;
+            return true;
+        }else {
+            m_lastPovValue=l_pov;
+            return false;
+        }
+    }
+    public int getPOVValue() {
+        return getPOV();
+        
+    }
+        
+    
+
+
     
 }
