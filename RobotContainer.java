@@ -23,10 +23,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
+  static final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  static final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   //private final ps4Brandon m_PersonalizedController =new ps4Brandon(0);
-  private final xBoxBrandon m_PersonalizedController =new xBoxBrandon(0);
+  static final xBoxBrandon m_PersonalizedController =new xBoxBrandon(0);
    // Replace with CommandPS4Controller or CommandJoystick if needed
   //private final CommandXboxController m_driverController =
       //new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -52,10 +52,10 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new PrintCommand("exampleCondition"));
-    new JoystickButton(this.m_PersonalizedController, this.m_PersonalizedController.enableFineControl())
+    new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControl())
       .whileTrue(new ArmFineControlCommand(m_ArmSubsystem));
       //.whileTrue(new PrintCommand("enableFineControl"));
-    new JoystickButton(this.m_PersonalizedController, 6)
+    new JoystickButton(m_PersonalizedController, 6)
       .onTrue(new PrintCommand("button 6"));
     
 
@@ -64,12 +64,12 @@ public class RobotContainer {
 
   
   private void setDefaultCommands(){
-    this.m_exampleSubsystem.setDefaultCommand(
-      this.m_exampleSubsystem.exampleDefaultCommand()
+    m_exampleSubsystem.setDefaultCommand(
+      m_exampleSubsystem.exampleDefaultCommand()
     );
-    this.m_ArmSubsystem.setDefaultCommand(
+    m_ArmSubsystem.setDefaultCommand(
       //this.m_ArmSubsystem.RunJointsToAngles(0,90,15,3)
-      this.m_ArmSubsystem.RunJointsToSetPoint()
+      m_ArmSubsystem.RunJointsToSetPoint()
     );
   }
 
