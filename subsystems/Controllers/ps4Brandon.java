@@ -22,7 +22,7 @@ public class ps4Brandon extends PS4Controller implements PersonalizedController 
     }
 
     @Override
-    public int enableFineControl() {
+    public int enableFineControlButton() {
         // TODO Auto-generated method stub
         return 1;
     }

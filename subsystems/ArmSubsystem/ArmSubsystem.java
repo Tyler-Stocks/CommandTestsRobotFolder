@@ -1,5 +1,6 @@
 package frc.robot.subsystems.ArmSubsystem;
 
+import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
 //import edu.wpi.first.wpilibj2.command.Command;
@@ -43,92 +44,139 @@ public class ArmSubsystem extends SubsystemBase {
   ArmConstants.CLAW_MAX, ArmConstants.CLAW_MIN,
   ArmConstants.CLAW_HOMED_OFFSET, ArmConstants.CLAW_DEGREES_PER_REVOLUTION);
 
-  
-
+  private static double azimuthAngle = 0;
+  private static double ShoulderAngle = 100;
+  private static double elbowAngle =15;
+  private static double clawPosition =0;
+  private static double radius;//not defined by default
+  private static double height;//not defined by default
+  private static int cumulativeDivisor=10;
 
   public void initialize() {
-    //force claw and azimuth into homed condition
+    //force claw and azimuth into homed condition since they have no limit switch
     AzimuthJoint.forceHomed();
     ClawJoint.forceHomed();
-
   }
-  public static double azimuthPosition = 0;
-  public static double shoulderPosition = 100;
-  public static double elbowPosition =15;
-  public static double clawPosition =0;
-
-      
-  private void setArmPosition( double l_azimuth, double l_shoulder, double l_elbow) {
-    //theta1CurrentSetting=m_theta1;
-    // theta2CurrentSetting=m_theta2;  
-    // azimuthCurrentSetting=m_azimuth; 
-  }
-  private void setArmAzimuth(double l_azimuth) {
-    if (l_azimuth>180){
-      l_azimuth-=360;
-    }
-    azimuthPosition = l_azimuth;
-    System.out.println(l_azimuth);
+     
+  public double[] getArmAngles() {
+    double[] l_currentPos = {azimuthAngle,ShoulderAngle,elbowAngle};
+    return l_currentPos;
   }
 
-  public CommandBase homeAll() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return run(()->{if(!ShoulderJoint.homedCondition()){ShoulderJoint.homeJoint();}
-    else if(!ElbowJoint.homedCondition()){ElbowJoint.homeJoint();}}).until(ElbowJoint::homedCondition);
+  public double[] getArmPositionThetaRZ() {
+    // Calculations done in Radians for 2 segment arm of equal segment lengths
+    //Length from shoulder to claw
+    double l_Hypotenus = 2 * ArmConstants.ARM_LENGTH1 * Math.sin(elbowAngle / 2 * Math.PI / 180);
+    //intetior angle between humerous and claw
+    double l_Theta1_1 = 90-elbowAngle/2;
+    //angle between ground and claw
+    double l_ThetaGroundClaw = ShoulderAngle - l_Theta1_1;
+  
+    // Define values
+    radius = l_Hypotenus * Math.cos(l_ThetaGroundClaw * Math.PI / 180); 
+    height = l_Hypotenus * Math.sin(l_ThetaGroundClaw * Math.PI / 180);
     
-
-  }
-  public CommandBase RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(()->{AzimuthJoint.RunJointToAngle(l_angleAzimuth);
-      ShoulderJoint.RunJointToAngle(l_angleShoulder);
-      ElbowJoint.RunJointToAngle(l_angleElbow);
-    ClawJoint.RunJointToAngle(l_clawPosition);});
-  }
-  public CommandBase RunJointsToSetPoint() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(()->{AzimuthJoint.RunJointToAngle(azimuthPosition);
-      ShoulderJoint.RunJointToAngle(shoulderPosition);
-      ElbowJoint.RunJointToAngle(elbowPosition);
-    ClawJoint.RunJointToAngle(clawPosition);});
-  }
-  public CommandBase cumulativeJointsToSetPoint(double l_azimuthAxis,double l_shoulderAxis,double l_elbowAxis,double l_clawTotal) {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    
-    return runOnce(()->{
-      azimuthPosition+= l_azimuthAxis;
-      shoulderPosition += l_shoulderAxis;
-      elbowPosition += l_elbowAxis;
-      clawPosition += l_clawTotal;
-      AzimuthJoint.RunJointToAngle(azimuthPosition);
-      ShoulderJoint.RunJointToAngle(shoulderPosition);
-      ElbowJoint.RunJointToAngle(elbowPosition);
-    ClawJoint.RunJointToAngle(clawPosition);});
+    //azimuth does not need to be converted
+    double[] l_currentPos = {azimuthAngle,radius,height};
+    return l_currentPos;
   }
 
-
-  public boolean exampleCondition() {
+  public boolean shoulderAndElbowHomedCondition() {
     // Query some boolean state, such as a digital sensor.
     return (ShoulderJoint.homedCondition()&&ElbowJoint.homedCondition());
   }
 
-  public static void zeroEncodersHere(){//for test
+  public static void zeroEncodersHere(){//for test *****
      ShoulderJoint.zeroEncoder();
      ShoulderJoint.unhome();
      ElbowJoint.zeroEncoder();
      ElbowJoint.unhome();
   }
+ 
+  // Homes the Shoulder joint First, Followed by the Elbow joint. not foolproof for in competition homing
+  public CommandBase homeAll() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return run(()->{if(!ShoulderJoint.homedCondition()){ShoulderJoint.homeJoint();}
+    else if(!ElbowJoint.homedCondition()){ElbowJoint.homeJoint();}}).until(ElbowJoint::homedCondition);
+  }
+ 
+  //Runs joints to the saved posiiton used for holding robot set position.
+  public CommandBase RunJointsToSetAnglesCommand() {
+    return runOnce(()->{RunJointsToSetAngles();});
+  }
+  public CommandBase cumulativeJointsToSetAngles(DoubleSupplier l_azimuthAxis,DoubleSupplier l_shoulderAxis,DoubleSupplier l_elbowAxis,DoubleSupplier l_clawTotal) {
+    return runOnce(()->{
+      azimuthAngle+= l_azimuthAxis.getAsDouble()/cumulativeDivisor;
+      ShoulderAngle += l_shoulderAxis.getAsDouble()/cumulativeDivisor;
+      elbowAngle += l_elbowAxis.getAsDouble()/cumulativeDivisor;
+      clawPosition += l_clawTotal.getAsDouble();
+      RunJointsToSetAngles();});
+  }
 
   public CommandBase POVInputCommand(IntSupplier l_POVAziumuth) {
-    // A split-stick arcade command, with forward/backward controlled by the left
-    // hand, and turning controlled by the right.
     return runOnce(() -> this.setArmAzimuth(l_POVAziumuth.getAsInt()))
         .withName("fine tuning Arm Motor");
 
+  }
+
+  public CommandBase RunJointsToThetaRZCommand(double l_theta, double l_r, double l_z) {
+    return runOnce(()->{RunJointsToThetaRZ(l_theta, l_r, l_z);});
+  }
+  // //temporary override to put the joints in another position
+  // public CommandBase RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {
+  //   // Inline construction of command goes here.
+  //   // Subsystem::RunOnce implicitly requires `this` subsystem.
+  //   return runOnce(()->{AzimuthJoint.RunJointToAngle(l_angleAzimuth);
+  //     ShoulderJoint.RunJointToAngle(l_angleShoulder);
+  //     ElbowJoint.RunJointToAngle(l_angleElbow);
+  //   ClawJoint.RunJointToAngle(l_clawPosition);});
+  // }
+  
+
+  //sets the arm azimuth to limit motion to +/-180 degrees. Does not affect fine control
+  private void setArmAzimuth(double l_azimuth) {
+    if (l_azimuth>180){
+      l_azimuth-=360;
+    }
+    azimuthAngle = l_azimuth;
+    System.out.println(l_azimuth);
+  }
+
+  private void RunJointsToSetAngles(){
+    AzimuthJoint.RunJointToAngle(azimuthAngle);
+    ShoulderJoint.RunJointToAngle(ShoulderAngle);
+    ElbowJoint.RunJointToAngle(elbowAngle);
+    ClawJoint.RunJointToAngle(clawPosition);
+  }
+
+  private void RunJointsToThetaRZ(double l_theta, double l_r, double l_z){
+    double [] l_angles = convertThetaRZtoAngles(l_theta, l_r, l_z);
+    //set those angles to the class variables
+    radius=l_r;
+    height=l_z;
+    azimuthAngle=l_angles[0];
+    ShoulderAngle=l_angles[1];
+    elbowAngle=l_angles[2];
+    RunJointsToSetAngles();
+  }
+
+  //does not work for negative radius, cannot handle the arm going overhead, no need to fix
+  //also does not work for arms with different segment lengths
+  private static double[] convertThetaRZtoAngles(double l_theta, double l_r, double l_z){
+    double l_hypotenus = Math.sqrt(l_r*l_r+l_z*l_z);
+    double l_thetaGroundClaw= Math.atan(l_z/l_r)*180/3.14;
+    //if statement prevents attempt to reach beyond arm lengths
+    if (l_hypotenus>(ArmConstants.ARM_LENGTH1+ArmConstants.ARM_LENGTH2)){
+      l_hypotenus=ArmConstants.ARM_LENGTH1+ArmConstants.ARM_LENGTH2;
+    }
+    //angle btween claw and humerous // only works for same segment length arms
+    double l_Theta1_1= Math.acos((l_hypotenus/2)/ArmConstants.ARM_LENGTH1)*180/3.14;
+    double l_shoulder = l_thetaGroundClaw+l_Theta1_1;
+    double l_elbow = 180-2*l_Theta1_1;
+
+    double[] l_angles ={l_theta,l_shoulder,l_elbow};
+    return l_angles;
   }
 
   @Override
@@ -141,47 +189,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  // private static float theta1CurrentSetting=ArmConstants.THETA1_START;
-  // private static float theta2CurrentSetting= ArmConstants.THETA2_START;
-  // private static float azimuthCurrentSetting=0;
-  // private static float theta1AnalogOffset=0;
-  // private static float theta2AnalogOffset=0;
-  // private static float azimuthAnalogOffset=0;
-  // private static float claw=0;
-
-
-//   public float[] getArmPosition(float Theta1, float Theta2) {
-
-//     // Calculations done in Radians
-//     float Hypotenus = 2 * ArmConstants.ARM_LENGTH1 * (float) Math.sin(Theta2 / 2 * Math.PI / 180);
-//     float Theta1_1 = (float) Math.asin((ArmConstants.ARM_LENGTH1 / Hypotenus) * Math.sin(Theta2 * Math.PI / 180));
-//     float Theta1_2 = Theta1 - Theta1_1;
   
-//     // Define an arry of values
-//     float[] HeightAndRadius = new float[1];
-//     HeightAndRadius[0] = Hypotenus * (float) Math.cos(Theta1_2 * Math.PI / 180); 
-//     HeightAndRadius[1] = Hypotenus * (float) Math.sin(Theta1_2 * Math.PI / 180);
-    
-//     // Return values
-//     return HeightAndRadius;
-
-//   }
-    
-//   public float[] GetArmAngle( float Hypotenus, float Theta1, float Theta2) {
-//     float[] Thetas = new float[2]; // make it [ conversion factor * this.ShoulderMotor.getEncoderValue(), other one];
-
-//     // Checks to see if the angles are the correct ones.
-//     if (Theta1 > ArmConstants.THETA1_MIN || Theta1 < ArmConstants.THETA1_MAX || Theta2 > ArmConstants.THETA2_MIN || Theta2 < ArmConstants.THETA2_MAX) {
-
-//       // Calculations done in Radians
-//       Thetas[0] = (float) Math.acos((Math.pow(ArmConstants.ARM_LENGTH1, 2) + Math.pow(Hypotenus, 2) - Math.pow(ArmConstants.ARM_LENGTH2, 2)) / (2 * ArmConstants.ARM_LENGTH1 * Hypotenus));
-//       Thetas[1] = (float) Math.acos((Math.pow(ArmConstants.ARM_LENGTH1, 2) + Math.pow(ArmConstants.ARM_LENGTH2, 2) - Math.pow(Hypotenus, 2)) / (2 * ArmConstants.ARM_LENGTH1 * ArmConstants.ARM_LENGTH2)); 
-      
-//       }
-    
-//     return Thetas;
-
-//   }
 
 //   private void RunAllMotorsToPosition(double m_theta1AnalogOffset,double m_theta2AnalogOffset, double m_azimuthAnalogOffset,double m_claw) {
 //     float m_theta1=this.theta1CurrentSetting;
@@ -252,16 +260,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 //     return runOnce(()->setArmPosition(c_theta1, c_theta2,c_azimuth));
 
-// }
-//   public void setArmPosition( float m_theta1, float m_theta2) {
-//     theta1CurrentSetting=m_theta1;
-//     theta2CurrentSetting=m_theta2;   
-//   }
-//   public void setArmPosition( float m_theta1, float m_theta2, float m_azimuth) {
-//     theta1CurrentSetting=m_theta1;
-//     theta2CurrentSetting=m_theta2;  
-//     azimuthCurrentSetting=m_azimuth; 
-//   }
 
 
 }

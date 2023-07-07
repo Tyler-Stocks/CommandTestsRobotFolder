@@ -58,11 +58,20 @@ public class RobotContainer {
         .onTrue(m_ArmSubsystem.POVInputCommand(() -> (m_PersonalizedController.getPOV())));
 
 
-    new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControl())
+    new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControlButton())
       .whileTrue(new ArmFineControlCommand(m_ArmSubsystem));
       //.whileTrue(new PrintCommand("enableFineControl"));
-    new JoystickButton(m_PersonalizedController, 6)
-      .onTrue(new PrintCommand("button 6"));
+    // new JoystickButton(m_PersonalizedController, 6)
+    //   .onTrue(new PrintCommand("button 6"));
+
+    new JoystickButton(m_PersonalizedController, 1)
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(0, 2, 0));
+    new JoystickButton(m_PersonalizedController, 2)
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(10, 40, 10));
+    new JoystickButton(m_PersonalizedController, 3)
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(10, 40, 20));
+    new JoystickButton(m_PersonalizedController, 4)
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(10, 40, 40));
     
 
     
@@ -75,7 +84,7 @@ public class RobotContainer {
     );
     m_ArmSubsystem.setDefaultCommand(
       //this.m_ArmSubsystem.RunJointsToAngles(0,90,15,3)
-      m_ArmSubsystem.RunJointsToSetPoint()
+      m_ArmSubsystem.RunJointsToSetAnglesCommand()
     );
   }
 
@@ -87,6 +96,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     //return Autos.exampleAuto(m_exampleSubsystem);
-    return m_ArmSubsystem.homeAll().until(m_ArmSubsystem::exampleCondition);
+    return m_ArmSubsystem.homeAll().until(m_ArmSubsystem::shoulderAndElbowHomedCondition);
   }
 }

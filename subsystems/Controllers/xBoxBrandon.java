@@ -46,7 +46,7 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
     }
 
     @Override
-    public int enableFineControl() {
+    public int enableFineControlButton() {
         return buttonMappings[0];
     }
 
