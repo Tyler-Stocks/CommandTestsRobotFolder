@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.commands.ArmFineControlCommand;
 //import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Autos;
 import frc.robot.commands.PrintCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ArmSubsystem.ArmFineControlCommand;
 import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
 import frc.robot.subsystems.Controllers.*;
 import edu.wpi.first.wpilibj2.command.Command;

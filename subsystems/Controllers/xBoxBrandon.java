@@ -65,6 +65,15 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
         return getPOV();
         
     }
+    public double getUpDown() {
+        return getRightY();
+    }
+    public double getLeftRight() {
+        return getRightX();
+    }
+    public double getInOut() {
+        return getLeftY();
+    }
         
     
 

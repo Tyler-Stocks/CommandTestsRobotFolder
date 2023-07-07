@@ -32,5 +32,23 @@ public class ps4Brandon extends PS4Controller implements PersonalizedController 
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public double getUpDown() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getLeftRight() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getInOut() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
     
 }

@@ -153,7 +153,7 @@ public class ArmSubsystem extends SubsystemBase {
     ClawJoint.RunJointToAngle(clawPosition);
   }
 
-  private void RunJointsToThetaRZ(double l_theta, double l_r, double l_z){
+  protected void RunJointsToThetaRZ(double l_theta, double l_r, double l_z){//protected to keep control within commands
     double [] l_angles = convertThetaRZtoAngles(l_theta, l_r, l_z);
     //set those angles to the class variables
     radius=l_r;
