@@ -79,6 +79,10 @@ public class Joint extends SparkmaxMotor {
     m_thetaCurrentSetting =angle;    
     RunJointToPosition(m_thetaCurrentSetting);
   }
+  protected void RunJointToAngle(double angle, int l_max, int l_min) {
+    m_thetaCurrentSetting =angle;    
+    RunJointToPosition(m_thetaCurrentSetting,l_max,l_min);
+  }
 
   protected boolean homedCondition() {
     // Query some boolean state, such as a digital sensor.    

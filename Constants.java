@@ -42,14 +42,14 @@ public final class Constants {
     public static final int THETA1_MIN = 30;
     public static final int THETA1_START_OFFSET = 98; //ANGLE FROM BASE BACK TO SEGMENT 1
     public static final int SHOULDER_MOTOR_ID = 3;
-    public static final int THETA1_HOMED_OFFSET = 130;
+    public static final int THETA1_HOMED_OFFSET = 126;//angle to center of elbow axis not 2x4
 
     //ElbowJoint
     public static final double ELBOW_JOINT_SPEED = 0.4;
     public static final double ELBOW_HOMING_SPEED = DEFAULT_HOMING_SPEED;
     public static final int THETA2_MAX = 180;
     public static final int THETA2_MIN = 30;
-    public static final int THETA2_START_OFFSET = 10;//ANGLE FROM ARM SEGMENT  1 TO 2
+    public static final int THETA2_START_OFFSET = 14;//ANGLE FROM ARM SEGMENT  1 TO 2 //was 13 is 18 only for pool noodle *****
     public static final int ELBOW_MOTOR_ID = 4;
     public static final int THETA2_HOMED_OFFSET = THETA2_START_OFFSET;
     //ClawJoint

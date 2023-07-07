@@ -45,7 +45,7 @@ public class ArmSubsystem extends SubsystemBase {
   ArmConstants.CLAW_HOMED_OFFSET, ArmConstants.CLAW_DEGREES_PER_REVOLUTION);
 
   private static double azimuthAngle = 0;
-  private static double ShoulderAngle = 100;
+  private static double ShoulderAngle = 90;
   private static double elbowAngle =15;
   private static double clawPosition =0;
   private static double radius;//not defined by default
@@ -146,7 +146,10 @@ public class ArmSubsystem extends SubsystemBase {
   private void RunJointsToSetAngles(){
     AzimuthJoint.RunJointToAngle(azimuthAngle);
     ShoulderJoint.RunJointToAngle(ShoulderAngle);
-    ElbowJoint.RunJointToAngle(elbowAngle);
+    if(ShoulderAngle>80){
+      ElbowJoint.RunJointToAngle(elbowAngle,180,ArmConstants.THETA2_HOMED_OFFSET);
+    }else{ElbowJoint.RunJointToAngle(elbowAngle);}
+    
     ClawJoint.RunJointToAngle(clawPosition);
   }
 

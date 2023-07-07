@@ -59,19 +59,19 @@ public class RobotContainer {
 
 
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControlButton())
-      .whileTrue(new ArmFineControlCommand(m_ArmSubsystem));
+      .whileTrue(new ArmFineControlCommand(m_ArmSubsystem,m_PersonalizedController));
       //.whileTrue(new PrintCommand("enableFineControl"));
     // new JoystickButton(m_PersonalizedController, 6)
     //   .onTrue(new PrintCommand("button 6"));
 
     new JoystickButton(m_PersonalizedController, 1)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(0, 2, 0));
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 12, 1));
     new JoystickButton(m_PersonalizedController, 2)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(10, 40, 10));
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 16, 6));
     new JoystickButton(m_PersonalizedController, 3)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(10, 40, 20));
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 28, 6));
     new JoystickButton(m_PersonalizedController, 4)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(10, 40, 40));
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 0, 80));
     
 
     

@@ -5,12 +5,14 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
+import frc.robot.subsystems.Controllers.PersonalizedController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class ArmFineControlCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
+  private final PersonalizedController m_controller;
   private int i=0;
    
 
@@ -19,8 +21,9 @@ public class ArmFineControlCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmFineControlCommand(ArmSubsystem subsystem) {
+  public ArmFineControlCommand(ArmSubsystem subsystem, PersonalizedController Controller) {
     m_armSubsystem = subsystem;
+    m_controller=Controller;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_armSubsystem);
   }
