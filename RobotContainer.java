@@ -9,6 +9,7 @@ package frc.robot;
 import frc.robot.commands.PrintCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ArmSubsystem.ArmFineControlCommand;
+import frc.robot.subsystems.ArmSubsystem.ArmFollowLineCommand;
 import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
 import frc.robot.subsystems.Controllers.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,18 +62,25 @@ public class RobotContainer {
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControlButton())
       .whileTrue(new ArmFineControlCommand(m_ArmSubsystem,m_PersonalizedController));
       //.whileTrue(new PrintCommand("enableFineControl"));
-    // new JoystickButton(m_PersonalizedController, 6)
-    //   .onTrue(new PrintCommand("button 6"));
+    new JoystickButton(m_PersonalizedController, 6)//hoome
+      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(0, 12, 1));
 
+    // new JoystickButton(m_PersonalizedController, 1)
+    //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 12, 1));
+    // new JoystickButton(m_PersonalizedController, 2)
+    //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 16, 6));
+    // new JoystickButton(m_PersonalizedController, 3)
+    //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 28, 6));
+    // new JoystickButton(m_PersonalizedController, 4)
+    //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 0, 80));
     new JoystickButton(m_PersonalizedController, 1)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 12, 1));
+      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 0, 5));
     new JoystickButton(m_PersonalizedController, 2)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 16, 6));
+      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 40, 10, 5));
     new JoystickButton(m_PersonalizedController, 3)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 28, 6));
+      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 20, 10, 10));
     new JoystickButton(m_PersonalizedController, 4)
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 0, 80));
-    
+      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 20, 5));
 
     
   }
