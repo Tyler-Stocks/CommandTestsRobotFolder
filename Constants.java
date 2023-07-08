@@ -19,7 +19,7 @@ public final class Constants {
   // Constants for Arm Subsystem
   public static final class ArmConstants {
     //Global Joint Constants
-    public static final Double DEFAULT_JOINT_SPEED =0.3;
+    public static final Double DEFAULT_JOINT_SPEED =0.3+.2;
         //Resetting 
     public static final Double DEFAULT_HOMING_SPEED = 0.15;
 
@@ -45,7 +45,7 @@ public final class Constants {
     public static final int THETA1_HOMED_OFFSET = 126;//angle to center of elbow axis not 2x4
 
     //ElbowJoint
-    public static final double ELBOW_JOINT_SPEED = 0.4;
+    public static final double ELBOW_JOINT_SPEED = DEFAULT_JOINT_SPEED+ 0.1;
     public static final double ELBOW_HOMING_SPEED = DEFAULT_HOMING_SPEED;
     public static final int THETA2_MAX = 180;
     public static final int THETA2_MIN = 30;

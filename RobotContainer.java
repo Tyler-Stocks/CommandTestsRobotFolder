@@ -6,7 +6,7 @@ package frc.robot;
 
 //import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Autos;
-import frc.robot.commands.PrintCommand;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ArmSubsystem.ArmFineControlCommand;
 import frc.robot.subsystems.ArmSubsystem.ArmFollowLineCommand;
@@ -62,8 +62,8 @@ public class RobotContainer {
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControlButton())
       .whileTrue(new ArmFineControlCommand(m_ArmSubsystem,m_PersonalizedController));
       //.whileTrue(new PrintCommand("enableFineControl"));
-    new JoystickButton(m_PersonalizedController, 6)//hoome
-      .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(0, 12, 1));
+    new JoystickButton(m_PersonalizedController, 6)//home
+      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 12, 1, 15));
 
     // new JoystickButton(m_PersonalizedController, 1)
     //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 12, 1));
@@ -74,7 +74,7 @@ public class RobotContainer {
     // new JoystickButton(m_PersonalizedController, 4)
     //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 0, 80));
     new JoystickButton(m_PersonalizedController, 1)
-      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 0, 5));
+      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 4, 5));
     new JoystickButton(m_PersonalizedController, 2)
       .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 40, 10, 5));
     new JoystickButton(m_PersonalizedController, 3)
@@ -82,6 +82,11 @@ public class RobotContainer {
     new JoystickButton(m_PersonalizedController, 4)
       .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 20, 5));
 
+    new JoystickButton(m_PersonalizedController, 7)
+      .onTrue(MultiLine.MultiLine1(m_ArmSubsystem));
+      
+    new JoystickButton(m_PersonalizedController, 8)
+      .onTrue(MultiLine.MultiLine2(m_ArmSubsystem));
     
   }
 
