@@ -66,13 +66,14 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
         
     }
     public double getUpDown() {
-        return getRightY();
+        return -getRightY();
     }
     public double getLeftRight() {
+        //System.out.println(getRightX());
         return getRightX();
     }
     public double getInOut() {
-        return getLeftY();
+        return -getLeftY();
     }
         
     

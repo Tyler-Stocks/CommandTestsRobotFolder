@@ -8,9 +8,7 @@ package frc.robot;
 //import frc.robot.commands.Autos;
 import frc.robot.commands.*;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.ArmSubsystem.ArmFineControlCommand;
-import frc.robot.subsystems.ArmSubsystem.ArmFollowLineCommand;
-import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
+import frc.robot.subsystems.ArmSubsystem.*;
 import frc.robot.subsystems.Controllers.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -64,7 +62,7 @@ public class RobotContainer {
       //.whileTrue(new PrintCommand("enableFineControl"));
     new JoystickButton(m_PersonalizedController, 6)//home
       .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 12, 1, 15));
-
+//test code to run to Theta R and Z at constant joint speeds
     // new JoystickButton(m_PersonalizedController, 1)
     //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 12, 1));
     // new JoystickButton(m_PersonalizedController, 2)
@@ -73,20 +71,34 @@ public class RobotContainer {
     //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 28, 6));
     // new JoystickButton(m_PersonalizedController, 4)
     //   .onTrue(m_ArmSubsystem.RunJointsToThetaRZCommand(-15, 0, 80));
+
+//Test code to Run to lines within a constant Theta.
+    // new JoystickButton(m_PersonalizedController, 1)
+    //   .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 4, 5));
+    // new JoystickButton(m_PersonalizedController, 2)
+    //   .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 40, 10, 5));
+    // new JoystickButton(m_PersonalizedController, 3)
+    //   .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 20, 10, 10));
+    // new JoystickButton(m_PersonalizedController, 4)
+    //   .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 20, 5) );//.withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+
     new JoystickButton(m_PersonalizedController, 1)
-      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 4, 5));
+      .onTrue(new ArmFollowLineXYZCommand(m_ArmSubsystem, 0,30, 4, 5));
     new JoystickButton(m_PersonalizedController, 2)
-      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 40, 10, 5));
+      .onTrue(new ArmFollowLineXYZCommand(m_ArmSubsystem, 10,30, 4, 5));
     new JoystickButton(m_PersonalizedController, 3)
-      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 20, 10, 10));
+      .onTrue(new ArmFollowLineXYZCommand(m_ArmSubsystem, -10,30, 4, 5));
     new JoystickButton(m_PersonalizedController, 4)
-      .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 30, 20, 5));
+      .onTrue(new ArmFollowLineXYZCommand(m_ArmSubsystem, 0,20, 4, 5) );
 
     new JoystickButton(m_PersonalizedController, 7)
       .onTrue(MultiLine.MultiLine1(m_ArmSubsystem));
       
     new JoystickButton(m_PersonalizedController, 8)
       .onTrue(MultiLine.MultiLine2(m_ArmSubsystem));
+
+    new JoystickButton(m_PersonalizedController, 9)
+      .onTrue(new PrintCommand("XYZ",m_ArmSubsystem));
     
   }
 

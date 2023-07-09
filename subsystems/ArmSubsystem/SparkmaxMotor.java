@@ -16,7 +16,7 @@ public class SparkmaxMotor  {
   protected boolean m_limitSwitchDirection=false; //false reverse true forward
   protected SparkMaxLimitSwitch limitSwitch;
 
-  protected SparkmaxMotor(int deviceID,Boolean limitSwitchDirection, double l_max_output, double l_min_output) {
+  protected SparkmaxMotor(int deviceID,Boolean limitSwitchDirection, double l_max_output, double l_min_output,boolean l_invert) {
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
     m_motor.restoreFactoryDefaults();
     m_pidControllerPos = m_motor.getPIDController();
@@ -27,6 +27,7 @@ public class SparkmaxMotor  {
       limitSwitch = m_motor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
     }
     initializePID(l_max_output,l_min_output);
+    m_motor.setInverted(l_invert);
   }
 
   protected void adjustMaxPID(double min, double max){

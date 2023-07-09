@@ -61,8 +61,8 @@ public class ArmFineControlCommand extends CommandBase {
   }
   private void getCumulativeThetaRZ(DoubleSupplier l_thetaIncrement,DoubleSupplier l_rIncrement,DoubleSupplier l_zIncrement){
     int l_divisor =50/10;//50 hz divided by inches per second
-    m_armThetaRZ[0]-=l_thetaIncrement.getAsDouble()*Math.abs(l_thetaIncrement.getAsDouble())/l_divisor*2;//sped up because this axis is degrees not inches
-    m_armThetaRZ[1]-=l_rIncrement.getAsDouble()*Math.abs(l_rIncrement.getAsDouble())/l_divisor;
-    m_armThetaRZ[2]-=l_zIncrement.getAsDouble()*Math.abs(l_zIncrement.getAsDouble())/l_divisor;
+    m_armThetaRZ[0]+=l_thetaIncrement.getAsDouble()*Math.abs(l_thetaIncrement.getAsDouble())/l_divisor*2;//sped up because this axis is degrees not inches
+    m_armThetaRZ[1]+=l_rIncrement.getAsDouble()*Math.abs(l_rIncrement.getAsDouble())/l_divisor;
+    m_armThetaRZ[2]+=l_zIncrement.getAsDouble()*Math.abs(l_zIncrement.getAsDouble())/l_divisor;
   }
 }

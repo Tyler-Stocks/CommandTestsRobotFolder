@@ -17,9 +17,10 @@ public class Joint extends SparkmaxMotor {
   double l_max_output, double l_min_output, 
   double l_homingSpeed, int l_startingAngle,
   int l_maxAngle, int l_minAngle,
-  int l_homePositionAngle, double l_degreesPerRev){
+  int l_homePositionAngle, double l_degreesPerRev,
+  boolean l_invert){
 
-    super(deviceID, limitSwitchDirection,l_max_output,l_min_output);
+    super(deviceID, limitSwitchDirection,l_max_output,l_min_output, l_invert);
     m_thetaCurrentSetting=l_startingAngle;
     m_startingAngle=l_startingAngle;
     m_homingSpeed = l_homingSpeed;
