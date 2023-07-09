@@ -40,7 +40,8 @@ public class ArmFollowLineCommand extends CommandBase {
     m_r1=l_thetaRZStart[1];//this all must be in initialize() because if in the constructor it happens on robot init
     m_z1=l_thetaRZStart[2];
     //calculate number of cycles given speed
-    numOfCycles= (int)(Math.hypot(m_r2-m_r1, m_z2-m_z1)/m_speedIPS*50);
+    numOfCycles= Math.max((int)(Math.hypot(m_r2-m_r1, m_z2-m_z1)/m_speedIPS*50),1);//set minimum cycles to 1 since the execute runs before it checks if it is finished
+    //it goes wild if it tries do 0*1/0 (zero times infinity!), which would happen if point 1 is where point 2 is;
     m_cycleNumber=1;//not zero because we do want it to move on the first execution
     System.out.println("linear Interpolating");
   }
@@ -69,7 +70,6 @@ public class ArmFollowLineCommand extends CommandBase {
   }
   private static double interpolate(double x1, double x2,  int step, int totalSteps){
     double output=x1 + (x2 - x1) * step/totalSteps;
-    
     return output;
   }
   
