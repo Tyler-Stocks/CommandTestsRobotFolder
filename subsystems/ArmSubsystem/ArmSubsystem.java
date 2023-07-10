@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import java.util.function.DoubleSupplier;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.ArmConstants;
+
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -211,7 +211,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  
+  /*Test Stuff
     // //temporary override to put the joints in another position
   // public CommandBase RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {
   //   // Inline construction of command goes here.
@@ -221,13 +221,13 @@ public class ArmSubsystem extends SubsystemBase {
   //     ElbowJoint.RunJointToAngle(l_angleElbow);
   //   ClawJoint.RunJointToAngle(l_clawPosition);});
   // }
-  public static void zeroEncodersHere(){//for test *****
-    ShoulderJoint.zeroEncoder();
-    ShoulderJoint.unhome();
-    ElbowJoint.zeroEncoder();
-    ElbowJoint.unhome();
-  }
-
+  // public static void zeroEncodersHere(){//for test *****
+  //   ShoulderJoint.zeroEncoder();
+  //   ShoulderJoint.unhome();
+  //   ElbowJoint.zeroEncoder();
+  //   ElbowJoint.unhome();
+  // }
+*/
 //   
 
 }

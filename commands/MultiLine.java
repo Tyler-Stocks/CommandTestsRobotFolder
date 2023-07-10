@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 
+import frc.robot.Constants.ArmMoveConstants;
 import frc.robot.subsystems.ArmSubsystem.ArmFollowLineCommand;
 import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,15 +13,23 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class MultiLine {
   /** Example static factory for an autonomous command. */
-  public static CommandBase MultiLine1(ArmSubsystem m_ArmSubsystem) {
-    return Commands.sequence(new ArmFollowLineCommand(m_ArmSubsystem, 30, 4, 15), 
-    new ArmFollowLineCommand(m_ArmSubsystem, 40, 10, 25),
+  public static CommandBase MultiLineToShelf(ArmSubsystem m_ArmSubsystem) {
+    return Commands.sequence(new ArmFollowLineCommand(m_ArmSubsystem, 15, 35, 35), 
+    new ArmFollowLineCommand(m_ArmSubsystem, ArmMoveConstants.SHELF_POSITION_RZ[0], ArmMoveConstants.SHELF_POSITION_RZ[1], 15));
     
-    new ArmFollowLineCommand(m_ArmSubsystem, 30, 20, 25),
-    new ArmFollowLineCommand(m_ArmSubsystem, 20, 10, 35));
+  }
+  public static CommandBase MultiLineToMedium(ArmSubsystem m_ArmSubsystem) {
+    return Commands.sequence(new ArmFollowLineCommand(m_ArmSubsystem, 20, 35, 35), 
+    new ArmFollowLineCommand(m_ArmSubsystem, ArmMoveConstants.MEDIUM_SCORING_POSITION_RZ[0], ArmMoveConstants.MEDIUM_SCORING_POSITION_RZ[1], 15));
+    
+  }
+  public static CommandBase MultiLineToHigh(ArmSubsystem m_ArmSubsystem) {
+    return Commands.sequence(new ArmFollowLineCommand(m_ArmSubsystem, 30, 46, 35), 
+    new ArmFollowLineCommand(m_ArmSubsystem, ArmMoveConstants.HIGH_SCORING_POSITION_RZ[0], ArmMoveConstants.HIGH_SCORING_POSITION_RZ[1], 15));
+    
   }
 
-  public static CommandBase MultiLine2(ArmSubsystem m_ArmSubsystem) {
+  public static CommandBase MultiLineDiamondTest(ArmSubsystem m_ArmSubsystem) {
     return Commands.sequence(new ArmFollowLineCommand(m_ArmSubsystem, 30, 4, 15), 
     new ArmFollowLineCommand(m_ArmSubsystem, 30, 30, 25),
     

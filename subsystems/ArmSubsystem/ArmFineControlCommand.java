@@ -7,11 +7,10 @@ package frc.robot.subsystems.ArmSubsystem; //it is in this package so it can con
 //If it is not in the same package, then it leaves the Subsystem Vulnerable to access outside 
 //the command structure
 
-import frc.robot.subsystems.Controllers.PersonalizedController;
-
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Controllers.PersonalizedController;
 
 /** An example command that uses an example subsystem. */
 public class ArmFineControlCommand extends CommandBase {
@@ -44,7 +43,7 @@ public class ArmFineControlCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    getCumulativeThetaRZ(() -> (m_controller.getLeftRight()),() -> (m_controller.getInOut()),() -> (m_controller.getUpDown()));
+    getCumulativeThetaRZ(() -> (m_controller.ArmLeftRightAxis()),() -> (m_controller.ArmInOutAxis()),() -> (m_controller.ArmUpDownAxis()));
     m_armSubsystem.RunJointsToThetaRZ(m_armThetaRZ[0],m_armThetaRZ[1],m_armThetaRZ[2]);
   }
 
