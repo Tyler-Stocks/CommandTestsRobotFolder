@@ -6,6 +6,7 @@ import java.util.function.IntSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.PrintCommand;
 //import java.util.function.DoubleSupplier;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -227,6 +228,7 @@ public class ArmSubsystem extends SubsystemBase {
       elbowAngle= ElbowJoint.getTrueJointAngle();
       System.out.println("elbow angle" + elbowAngle);
     //}
+    new PrintCommand("XYZ",this).schedule();
     
   }
 

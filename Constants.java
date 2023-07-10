@@ -17,7 +17,7 @@ public final class Constants {
         public static final int[] GROUND_PICKUP_POSITION_RZ = {20,-3};
         public static final int[] SHELF_POSITION_RZ = {25,36};
         public static final int[] HIGH_SCORING_POSITION_RZ = {45,45};
-        public static final int[] MEDIUM_SCORING_POSITION_RZ = {35,30};
+        public static final int[] MEDIUM_SCORING_POSITION_RZ = {(int)Math.hypot(34.1, 37.3),32};
         public static final int CLAW_OPEN_POSITION = 0;
         public static final int CLAW_CONE_POSITION = 100;//13; 100 Goes right to the max set in armConstants
         public static final int CLAW_CUBE_POSITION = 5;
