@@ -24,7 +24,7 @@ public final class ArmConstants {
     public static final double SHOULDER_HOMING_SPEED = DEFAULT_HOMING_SPEED;
     public static final int THETA1_MAX = 135;
     public static final int THETA1_MIN = 30;
-    public static final int THETA1_START_OFFSET = 98; //ANGLE FROM BASE BACK TO SEGMENT 1
+    public static final int THETA1_START_OFFSET = 126;//*****//90; //ANGLE FROM BASE BACK TO SEGMENT 1
     public static final int SHOULDER_MOTOR_ID = 3;
     public static final int THETA1_HOMED_OFFSET = 126;//angle to center of elbow axis not 2x4
 
@@ -40,9 +40,9 @@ public final class ArmConstants {
     
     public static final double CLAW_JOINT_SPEED = 0.2;
     public static final double CLAW_HOMING_SPEED = DEFAULT_HOMING_SPEED;
-    public static final int CLAW_MAX = 6;
-    public static final int CLAW_MIN = -7;
-    public static final int CLAW_START_OFFSET = -9;//for claw open positon
+    public static final int CLAW_MAX = 15;
+    public static final int CLAW_MIN = 0;
+    public static final int CLAW_START_OFFSET = 0;//for claw open positon
     public static final int CLAW_MOTOR_ID = 5;
     public static final int CLAW_HOMED_OFFSET = 0;
 

@@ -28,6 +28,11 @@ public class Joint extends SparkmaxMotor {
     m_minAngle=l_minAngle;
     m_degreesPerRev=l_degreesPerRev;
     m_homePositionAngle=l_homePositionAngle;
+    if (deviceID==ArmConstants.CLAW_MOTOR_ID){
+      m_motor.setSmartCurrentLimit( 10,  60,  2);
+    }else{
+      m_motor.setSmartCurrentLimit( 10,  5,  20000);
+    }
   }
 
   //shorter method constructor for default max/min angles
@@ -38,17 +43,17 @@ public class Joint extends SparkmaxMotor {
   //longer constructor to allow changed max and min angles when other joints are limiting the range
   private void RunJointToPosition(double l_thetaDesiredPos,int l_maxAngle, int l_minAngle) {
     //checks for software limits with min and max angles
-    double m_theta1;
+    double l_theta;
     if (JointZeroed){
-      m_theta1 = Math.min(Math.max(l_minAngle, l_thetaDesiredPos),l_maxAngle);
+      l_theta = Math.min(Math.max(l_minAngle, l_thetaDesiredPos),l_maxAngle);
     }else{
-      m_theta1 = l_thetaDesiredPos;
+      l_theta = l_thetaDesiredPos;
     }
     //adjustments for offsets and conversions
     if (JointZeroed){
-      runToposition((m_theta1-m_homePositionAngle)/m_degreesPerRev);
+      runToposition((l_theta-m_homePositionAngle)/m_degreesPerRev);
     }else{
-      runToposition((m_theta1-m_startingAngle)/m_degreesPerRev);
+      runToposition((l_theta-m_startingAngle)/m_degreesPerRev);
     }
   }
 

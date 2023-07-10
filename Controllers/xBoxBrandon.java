@@ -27,9 +27,13 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
         XboxController.Button.kX.value,// arm to medium score position
         XboxController.Button.kA.value,// arm to ground pickup score position
         XboxController.Button.kB.value,// arm to shelf pickup position
-        XboxController.Button.kRightBumper.value,// arm to home/drive position
+        XboxController.Button.kStart.value,// arm to home/drive position
         XboxController.Button.kLeftStick.value,// Shift High
-        XboxController.Button.kRightStick.value// Shift Low
+        XboxController.Button.kRightStick.value,// Shift Low
+        XboxController.Button.kRightBumper.value,// open claw
+        XboxController.Button.kRightStick.value,// close claw cube
+        XboxController.Button.kLeftStick.value// close claw cone
+
         };
     private int m_lastPovValue=-1;
 
@@ -75,6 +79,18 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
     @Override
     public int shiftHighButton() {
         return buttonMappings[7];
+    }
+    //@Override
+    public int openClawButton() {
+        return buttonMappings[8];
+    }
+    //@Override
+    public int closeClawCubeButton() {
+        return buttonMappings[9];
+    }
+    //@Override
+    public int closeClawConeButton() {
+        return buttonMappings[10];
     }
 
     @Override

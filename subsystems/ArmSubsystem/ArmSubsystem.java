@@ -116,6 +116,12 @@ public class ArmSubsystem extends SubsystemBase {
   public CommandBase RunJointsToSetAnglesCommand() {
     return runOnce(()->{RunJointsToSetAngles();});
   }
+  public CommandBase setClawPositionCommand(int l_position) {
+    return runOnce(()->{
+      clawPosition=l_position;
+      RunJointsToSetAngles();}
+    );
+  }
   //uses the set arm azimuth to take the POV input and move the arm quickly
   public CommandBase POVInputCommand(IntSupplier l_POVAziumuth) {
     return runOnce(() -> this.setArmAzimuth(l_POVAziumuth.getAsInt()))

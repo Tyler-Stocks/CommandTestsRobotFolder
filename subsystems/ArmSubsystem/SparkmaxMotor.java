@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class SparkmaxMotor  {
   
-  private CANSparkMax m_motor;
+  protected CANSparkMax m_motor;
   protected SparkMaxPIDController m_pidControllerPos;
   protected RelativeEncoder m_encoder;
   protected double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -28,6 +28,8 @@ public class SparkmaxMotor  {
     }
     initializePID(l_max_output,l_min_output);
     m_motor.setInverted(l_invert);
+    
+    
   }
 
   protected void adjustMaxPID(double min, double max){
