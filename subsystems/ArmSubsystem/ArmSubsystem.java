@@ -144,7 +144,7 @@ public class ArmSubsystem extends SubsystemBase {
   private void RunJointsToSetAngles(){
     AzimuthJoint.RunJointToAngle(azimuthAngle);
     ShoulderJoint.RunJointToAngle(ShoulderAngle);
-    if(ShoulderAngle>80){
+    if(ShoulderAngle>82){
       ElbowJoint.RunJointToAngle(elbowAngle,180,ArmConstants.THETA2_HOMED_OFFSET);
     }else{ElbowJoint.RunJointToAngle(elbowAngle);}
     
@@ -217,6 +217,19 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+  
+  public void forInitUseOnlyHold(){
+    azimuthAngle=AzimuthJoint.getTrueJointAngle();
+    System.out.println("azimuth angle" + azimuthAngle);
+    //if (shoulderAndElbowHomedCondition()){
+      ShoulderAngle=ShoulderJoint.getTrueJointAngle();
+      System.out.println("shoulder angle" + ShoulderAngle);
+      elbowAngle= ElbowJoint.getTrueJointAngle();
+      System.out.println("elbow angle" + elbowAngle);
+    //}
+    
+  }
+
   /*Test Stuff
     // //temporary override to put the joints in another position
   // public CommandBase RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {

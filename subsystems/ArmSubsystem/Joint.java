@@ -3,7 +3,7 @@ package frc.robot.subsystems.ArmSubsystem;
 public class Joint extends SparkmaxMotor {
 
   // Define all of the motors
-  SparkmaxMotor jointMotor; //= new SparkmaxMotor(ArmConstants.AZIMUTH_MOTOR_ID, ArmConstants.AZIMUTH_LIMIT_SWITH_DIRECTION,0.3, 0.3);
+  //SparkmaxMotor jointMotor; //= new SparkmaxMotor(ArmConstants.AZIMUTH_MOTOR_ID, ArmConstants.AZIMUTH_LIMIT_SWITH_DIRECTION,0.3, 0.3);
 
   private double m_homingSpeed, m_degreesPerRev;
   public double m_thetaCurrentSetting;
@@ -35,6 +35,15 @@ public class Joint extends SparkmaxMotor {
     }
   }
 
+  public double getTrueJointAngle(){
+    double l_trueJointAngle;
+    if (JointZeroed){
+      l_trueJointAngle=m_homePositionAngle+(m_degreesPerRev*m_encoder.getPosition());
+    }else{//note: obviously not guaranteed if not zeroed, but it will hold that position
+      l_trueJointAngle=m_startingAngle+(m_degreesPerRev*m_encoder.getPosition());
+    }
+    return l_trueJointAngle;
+  }
   //shorter method constructor for default max/min angles
   private void RunJointToPosition(double l_thetaDesiredPos){
     RunJointToPosition(l_thetaDesiredPos,m_maxAngle,m_minAngle);
