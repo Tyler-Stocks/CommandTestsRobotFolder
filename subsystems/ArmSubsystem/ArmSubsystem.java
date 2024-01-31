@@ -49,8 +49,8 @@ public class ArmSubsystem extends SubsystemBase {
   false);
 
   private static double azimuthAngle = 0;
-  private static double ShoulderAngle = 90;
-  private static double elbowAngle =15;
+  private static double ShoulderAngle = 100;
+  private static double elbowAngle =25;
   private static double clawPosition =0;
   
   public void initialize() {

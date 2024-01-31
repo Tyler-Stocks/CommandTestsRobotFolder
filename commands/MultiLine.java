@@ -7,6 +7,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ArmMoveConstants;
 import frc.robot.subsystems.ArmSubsystem.ArmFollowLineCommand;
+import frc.robot.subsystems.ArmSubsystem.ArmFollowLineXYZCommand;
 import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -37,6 +38,21 @@ public final class MultiLine {
     new ArmFollowLineCommand(m_ArmSubsystem, 30, 60, 35));
   }
 
+  public static CommandBase MultiLineHHTest(ArmSubsystem m_ArmSubsystem) {
+    double[] l_currentPos = {0,20,15};
+    return Commands.sequence(
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+0, l_currentPos[1]+2,l_currentPos[2]+0, 0.5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+0, l_currentPos[1]+2,l_currentPos[2]+8, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+0, l_currentPos[1]+0,l_currentPos[2]+8, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+4, l_currentPos[1]+0,l_currentPos[2]+0, 5),
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+4, l_currentPos[1]+2,l_currentPos[2]+0, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+4, l_currentPos[1]+2,l_currentPos[2]+8, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+4, l_currentPos[1]+0,l_currentPos[2]+8, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+4, l_currentPos[1]+0,l_currentPos[2]+4, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+4, l_currentPos[1]+2,l_currentPos[2]+4, 5), 
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+0, l_currentPos[1]+2,l_currentPos[2]+4, 5),  
+      new ArmFollowLineXYZCommand(m_ArmSubsystem, l_currentPos[0]+0, l_currentPos[1]+0,l_currentPos[2]+4, 5));
+  }
   // private MultiLine() {
   //   throw new UnsupportedOperationException("This is a utility class!");
   // }
