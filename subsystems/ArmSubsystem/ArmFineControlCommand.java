@@ -9,11 +9,11 @@ package frc.robot.subsystems.ArmSubsystem; //it is in this package so it can con
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controllers.PersonalizedController;
 
 /** An example command that uses an example subsystem. */
-public class ArmFineControlCommand extends CommandBase {
+public class ArmFineControlCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
   private final PersonalizedController m_controller;
@@ -59,7 +59,8 @@ public class ArmFineControlCommand extends CommandBase {
     return false;
   }
   private void getCumulativeThetaRZ(DoubleSupplier l_thetaIncrement,DoubleSupplier l_rIncrement,DoubleSupplier l_zIncrement){
-    int l_divisor =50/10;//50 hz divided by inches per second
+    int l_speed= 15;//IPS
+    int l_divisor =50/l_speed;//50 hz divided by inches per second
     m_armThetaRZ[0]+=l_thetaIncrement.getAsDouble()*Math.abs(l_thetaIncrement.getAsDouble())/l_divisor*2;//sped up because this axis is degrees not inches
     m_armThetaRZ[1]+=l_rIncrement.getAsDouble()*Math.abs(l_rIncrement.getAsDouble())/l_divisor;
     m_armThetaRZ[2]+=l_zIncrement.getAsDouble()*Math.abs(l_zIncrement.getAsDouble())/l_divisor;

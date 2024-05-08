@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem.ArmSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class PrintCommand extends CommandBase {
+public class PrintCommand extends Command {
   private String m_string;
   private ArmSubsystem m_ArmSubsystem;
   

@@ -4,7 +4,7 @@ import java.util.function.IntSupplier;
 
 //import edu.wpi.first.wpilibj2.command.Command;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.PrintCommand;
 //import java.util.function.DoubleSupplier;
@@ -106,7 +106,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
  
   // Homes the Shoulder joint First, Followed by the Elbow joint. not foolproof for in competition homing
-  public CommandBase homeAll() {
+  public Command homeAll() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return run(()->{if(!ShoulderJoint.homedCondition()){ShoulderJoint.homeJoint();}
@@ -114,23 +114,23 @@ public class ArmSubsystem extends SubsystemBase {
   }
  
   //Default Runs joints to the saved posiiton used for holding robot set position.
-  public CommandBase RunJointsToSetAnglesCommand() {
+  public Command RunJointsToSetAnglesCommand() {
     return runOnce(()->{RunJointsToSetAngles();});
   }
-  public CommandBase setClawPositionCommand(int l_position) {
+  public Command setClawPositionCommand(int l_position) {
     return runOnce(()->{
       clawPosition=l_position;
       RunJointsToSetAngles();}
     );
   }
   //uses the set arm azimuth to take the POV input and move the arm quickly
-  public CommandBase POVInputCommand(IntSupplier l_POVAziumuth) {
+  public Command POVInputCommand(IntSupplier l_POVAziumuth) {
     return runOnce(() -> this.setArmAzimuth(l_POVAziumuth.getAsInt()))
         .withName("fine tuning Arm Motor");
 
   }
   //Self descriptive
-  public CommandBase RunJointsToThetaRZCommand(double l_theta, double l_r, double l_z) {
+  public Command RunJointsToThetaRZCommand(double l_theta, double l_r, double l_z) {
     return runOnce(()->{RunJointsToThetaRZ(l_theta, l_r, l_z);});
   }
   //sets the arm azimuth to limit motion to +/-180 degrees. Does not affect fine control
@@ -234,7 +234,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   /*Test Stuff
     // //temporary override to put the joints in another position
-  // public CommandBase RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {
+  // public Command RunJointsToAngles(double l_angleAzimuth, double l_angleShoulder, double l_angleElbow, double l_clawPosition) {
   //   // Inline construction of command goes here.
   //   // Subsystem::RunOnce implicitly requires `this` subsystem.
   //   return runOnce(()->{AzimuthJoint.RunJointToAngle(l_angleAzimuth);

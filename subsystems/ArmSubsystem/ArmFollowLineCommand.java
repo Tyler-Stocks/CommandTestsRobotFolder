@@ -7,10 +7,10 @@ package frc.robot.subsystems.ArmSubsystem; //it is in this package so it can con
 //If it is not in the same package, then it leaves the Subsystem Vulnerable to access outside 
 //the command structure
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class ArmFollowLineCommand extends CommandBase {
+public class ArmFollowLineCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
   private final double  m_r2, m_z2, m_speedIPS;
