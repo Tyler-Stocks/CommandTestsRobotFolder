@@ -22,6 +22,24 @@ public final class Constants {
         public static final int CLAW_CONE_POSITION = 100;//13; 100 Goes right to the max set in armConstants
         public static final int CLAW_CUBE_POSITION = 5;
     }
+    public static final class DriveConstants {
+        public static final int MOTORLEFT1PORT = 0;
+        public static final int MOTORLEFT2PORT = 1;
+        public static final int MOTORRIGHT1PORT = 2;
+        public static final int MOTORRIGHT2PORT = 3;
+    
+        public static final int[] ENCODERPORTSLEFT = {0, 1};
+        public static final int[] ENCODERPORTSRIGHT = {2, 3};
+        public static final boolean ENCODERREVERSEDLEFT = false;
+        public static final boolean ENCODERREVERSEDRIGHT= true;
+    
+        public static final double ADAPTIVESTEERINGSENSITIVITY = 0.002;
+    
+        public static final int ENCODERTICKSPERREV= 1024;
+        
+        public static final double ENCODERDISTANCEPERPULSEINCHES =3.0;
+            
+    }
   
   
 

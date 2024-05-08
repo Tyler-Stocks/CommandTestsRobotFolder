@@ -7,7 +7,10 @@ package frc.robot;
 import frc.robot.Controllers.*;
 import frc.robot.commands.*;
 import frc.robot.Constants.ArmMoveConstants;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ArmSubsystem.*;
+import frc.robot.subsystems.DriveSubsystem.DriveControlCommand;
+import frc.robot.subsystems.DriveSubsystem.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  
+  static final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+  static final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   static final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   //private final ps4Brandon m_PersonalizedController =new ps4Brandon(0);
   static final xBoxBrandon m_PersonalizedController =new xBoxBrandon(0);
@@ -51,6 +55,9 @@ public class RobotContainer {
 
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableFineControlButton())
       .whileTrue(new ArmFineControlCommand(m_ArmSubsystem,m_PersonalizedController));
+    
+    new JoystickButton(m_PersonalizedController, m_PersonalizedController.enableDriveButton())
+      .whileTrue(new DriveControlCommand(m_DriveSubsystem, m_PersonalizedController));
       
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.goToHomeButton())// go to home (arm doesn't fall when turned off)
       .onTrue(new ArmFollowLineCommand(m_ArmSubsystem, 12, 1, 15));
@@ -86,11 +93,11 @@ public class RobotContainer {
 
     // new JoystickButton(m_PersonalizedController, m_PersonalizedController.openClawButton())
     //   .onTrue(m_ArmSubsystem.setClawPositionCommand(Constants.ArmMoveConstants.CLAW_OPEN_POSITION));
-    new JoystickButton(m_PersonalizedController, m_PersonalizedController.openClawButton())
+    new JoystickButton(m_PersonalizedController, m_PersonalizedController.closeClawCubeButton())
       .onTrue(MultiLine.MultiLineHHTest(m_ArmSubsystem));
 
-    new JoystickButton(m_PersonalizedController, m_PersonalizedController.closeClawCubeButton())
-      .onTrue(m_ArmSubsystem.setClawPositionCommand(Constants.ArmMoveConstants.CLAW_CUBE_POSITION));
+    // new JoystickButton(m_PersonalizedController, m_PersonalizedController.closeClawCubeButton())
+    //   .onTrue(m_ArmSubsystem.setClawPositionCommand(Constants.ArmMoveConstants.CLAW_CUBE_POSITION));
 
     new JoystickButton(m_PersonalizedController, m_PersonalizedController.closeClawConeButton())
       .onTrue(m_ArmSubsystem.setClawPositionCommand(Constants.ArmMoveConstants.CLAW_CONE_POSITION));
@@ -98,6 +105,14 @@ public class RobotContainer {
   }
   
   private void setDefaultCommands(){
+    m_LimelightSubsystem.setDefaultCommand(
+      m_LimelightSubsystem.checkForTargetsCommand()
+    );
+
+    m_DriveSubsystem.setDefaultCommand(
+      m_DriveSubsystem.arcadeDriveSquaredCommand(
+          () -> 0, () -> 0)
+    );
     
     m_ArmSubsystem.setDefaultCommand(
       m_ArmSubsystem.RunJointsToSetAnglesCommand()
