@@ -15,43 +15,62 @@ import frc.robot.commands.PrintCommand;
 public class ArmSubsystem extends SubsystemBase {
 
   // Define all of the Joints
-  // public Joint(int deviceID,Boolean limitSwitchDirection, 
-  // double l_max_output, double l_min_output, 
-  // double l_homingSpeed, int l_startingAngle,
-  // int l_maxAngle, int l_minAngle,
-  // int l_homePositionAngle, double l_degreesPerRev){
-  private static Joint ShoulderJoint = new Joint(ArmConstants.SHOULDER_MOTOR_ID, ArmConstants.SHOULDER_LIMIT_SWITCH_DIRECTION,
-  ArmConstants.SHOULDER_JOINT_SPEED,ArmConstants.SHOULDER_JOINT_SPEED,
-  ArmConstants.SHOULDER_HOMING_SPEED, ArmConstants.THETA1_START_OFFSET,
-  ArmConstants.THETA1_MAX, ArmConstants.THETA1_MIN,
-  ArmConstants.THETA1_HOMED_OFFSET, ArmConstants.SHOULDER_DEGREES_PER_REVOLUTION,
-  false);
+  private static Joint ShoulderJoint = 
+    new Joint(ArmConstants.SHOULDER_MOTOR_ID, 
+              ArmConstants.SHOULDER_LIMIT_SWITCH_DIRECTION,
+              ArmConstants.SHOULDER_JOINT_SPEED,
+              ArmConstants.SHOULDER_JOINT_SPEED,
+              ArmConstants.SHOULDER_HOMING_SPEED, 
+              ArmConstants.THETA1_START_OFFSET,
+              ArmConstants.THETA1_MAX, 
+              ArmConstants.THETA1_MIN,
+              ArmConstants.THETA1_HOMED_OFFSET, 
+              ArmConstants.SHOULDER_DEGREES_PER_REVOLUTION,
+     false);
   
-  private static Joint ElbowJoint = new Joint(ArmConstants.ELBOW_MOTOR_ID, ArmConstants.ELBOW_LIMIT_SWITCH_DIRECTION,
-  ArmConstants.ELBOW_JOINT_SPEED,ArmConstants.ELBOW_JOINT_SPEED,
-  ArmConstants.ELBOW_HOMING_SPEED, ArmConstants.THETA2_START_OFFSET,
-  ArmConstants.THETA2_MAX, ArmConstants.THETA2_MIN,
-  ArmConstants.THETA2_HOMED_OFFSET, ArmConstants.ELBOW_DEGREES_PER_REVOLUTION,
-  false);
+  private static Joint ElbowJoint 
+    = new Joint(ArmConstants.ELBOW_MOTOR_ID, 
+                ArmConstants.ELBOW_LIMIT_SWITCH_DIRECTION,
+                ArmConstants.ELBOW_JOINT_SPEED,
+                ArmConstants.ELBOW_JOINT_SPEED,
+                ArmConstants.ELBOW_HOMING_SPEED, 
+                ArmConstants.THETA2_START_OFFSET,
+                ArmConstants.THETA2_MAX, 
+                ArmConstants.THETA2_MIN,
+                ArmConstants.THETA2_HOMED_OFFSET, 
+                ArmConstants.ELBOW_DEGREES_PER_REVOLUTION,
+       false);
 
-  private static Joint AzimuthJoint = new Joint(ArmConstants.AZIMUTH_MOTOR_ID, ArmConstants.AZIMUTH_LIMIT_SWITCH_DIRECTION,
-  ArmConstants.AZIMUTH_JOINT_SPEED,ArmConstants.AZIMUTH_JOINT_SPEED,
-  ArmConstants.AZIMUTH_HOMING_SPEED, ArmConstants.AZIMUTH_START_OFFSET,
-  ArmConstants.AZIMUTH_MAX, ArmConstants.AZIMUTH_MIN,
-  ArmConstants.AZIMUTH_HOMED_OFFSET, ArmConstants.AZIMUTH_DEGREES_PER_REVOLUTION,
-  true);
+  private static Joint AzimuthJoint 
+    = new Joint(ArmConstants.AZIMUTH_MOTOR_ID, 
+                ArmConstants.AZIMUTH_LIMIT_SWITCH_DIRECTION,
+                ArmConstants.AZIMUTH_JOINT_SPEED,
+                ArmConstants.AZIMUTH_JOINT_SPEED,
+                ArmConstants.AZIMUTH_HOMING_SPEED, 
+                ArmConstants.AZIMUTH_START_OFFSET,
+                ArmConstants.AZIMUTH_MAX, 
+                ArmConstants.AZIMUTH_MIN,
+                ArmConstants.AZIMUTH_HOMED_OFFSET, 
+                ArmConstants.AZIMUTH_DEGREES_PER_REVOLUTION,
+       true);
 
-  private static Joint ClawJoint = new Joint(ArmConstants.CLAW_MOTOR_ID, ArmConstants.CLAW_LIMIT_SWITCH_DIRECTION,
-  0.5,ArmConstants.CLAW_JOINT_SPEED,//OVERIDE MAX SPEED FOR CLOSING
-  ArmConstants.CLAW_HOMING_SPEED, ArmConstants.CLAW_START_OFFSET,
-  ArmConstants.CLAW_MAX, ArmConstants.CLAW_MIN,
-  ArmConstants.CLAW_HOMED_OFFSET, ArmConstants.CLAW_DEGREES_PER_REVOLUTION,
-  false);
+  private static Joint ClawJoint 
+    = new Joint(ArmConstants.CLAW_MOTOR_ID, 
+                ArmConstants.CLAW_LIMIT_SWITCH_DIRECTION,
+   0.5,
+                ArmConstants.CLAW_JOINT_SPEED,//OVERIDE MAX SPEED FOR CLOSING
+                ArmConstants.CLAW_HOMING_SPEED, 
+                ArmConstants.CLAW_START_OFFSET,
+                ArmConstants.CLAW_MAX, 
+                ArmConstants.CLAW_MIN,
+                ArmConstants.CLAW_HOMED_OFFSET, 
+                ArmConstants.CLAW_DEGREES_PER_REVOLUTION,
+       false);
 
-  private static double azimuthAngle = 0;
+  private static double azimuthAngle  = 0;
   private static double ShoulderAngle = 100;
-  private static double elbowAngle =25;
-  private static double clawPosition =0;
+  private static double elbowAngle    = 25;
+  private static double clawPosition  = 0;
   
   public void initialize() {
     //force claw and azimuth into homed condition since they have no limit switch
@@ -64,26 +83,26 @@ public class ArmSubsystem extends SubsystemBase {
     return l_currentPos;
   }
   public double[] getArmPositionThetaRZ() {
-    // Calculations done in Radians for 2 segment arm of equal segment lengths
-    //Length from shoulder to claw
-    double l_Hypotenus = 2 * ArmConstants.ARM_LENGTH1 * Math.sin(elbowAngle / 2 * Math.PI / 180);
-    //intetior angle between humerous and claw
+    double l_shoulderToClaw = 2 * ArmConstants.ARM_LENGTH1 * Math.sin(elbowAngle / 2 * Math.PI / 180);
+
+    // Intetior angle between humerous and claw
     double l_Theta1_1 = 90-elbowAngle/2;
-    //angle between ground and claw
+
+    // Angle between ground and claw
     double l_ThetaGroundClaw = ShoulderAngle - l_Theta1_1;
   
     // Define values
-    double l_radius = l_Hypotenus * Math.cos(l_ThetaGroundClaw * Math.PI / 180); 
-    double l_height = l_Hypotenus * Math.sin(l_ThetaGroundClaw * Math.PI / 180);
+    double l_radius = l_shoulderToClaw * Math.cos(l_ThetaGroundClaw * Math.PI / 180); 
+    double l_height = l_shoulderToClaw * Math.sin(l_ThetaGroundClaw * Math.PI / 180);
     
-    //azimuth does not need to be converted
-    double[] l_currentPos = {azimuthAngle,l_radius,l_height};
+    // Azimuth does not need to be converted
+    double[] l_currentPos = {azimuthAngle, l_radius, l_height};
     return l_currentPos;
   }
   public double[] getArmPositionXYZ() {
     // Calculations done in Radians for 2 segment arm of equal segment lengths
     //Length from shoulder to claw
-    double l_x,l_y,l_z;
+    double l_x, l_y, l_z;
     double l_Hypotenus = 2 * ArmConstants.ARM_LENGTH1 * Math.sin(elbowAngle / 2 * Math.PI / 180);
     //intetior angle between humerous and claw
     double l_Theta1_1 = 90-elbowAngle/2;
