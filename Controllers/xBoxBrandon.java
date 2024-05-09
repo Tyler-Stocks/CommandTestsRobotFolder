@@ -51,6 +51,10 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
         return buttonMappings[0];
     }
     @Override
+    public int enableDriveButton() {
+        return XboxController.Button.kRightBumper.value;
+    }
+    @Override
     public int goToHighPosButton() {
         return buttonMappings[1];
     }
@@ -84,9 +88,9 @@ public class xBoxBrandon extends XboxController implements PersonalizedControlle
     public int openClawButton() {
         return buttonMappings[8];
     }
-    //@Override
+         //@Override
     public int closeClawCubeButton() {
-        return buttonMappings[9];
+   return buttonMappings[9];
     }
     //@Override
     public int closeClawConeButton() {

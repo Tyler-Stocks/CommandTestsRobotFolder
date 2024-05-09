@@ -3,6 +3,7 @@ package frc.robot.Controllers;
 public interface PersonalizedController {
     PersonalizedController getcontroller();
     int enableFineControlButton();
+    int enableDriveButton();
     int goToHighPosButton();
     int goToMedPosButton();
     int goToGroundPickupPosButton();

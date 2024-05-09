@@ -1,20 +1,20 @@
 package frc.robot.subsystems.ArmSubsystem;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxLimitSwitch;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkLimitSwitch;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class SparkmaxMotor  {
   
   protected CANSparkMax m_motor;
-  protected SparkMaxPIDController m_pidControllerPos;
+  protected SparkPIDController m_pidControllerPos;
   protected RelativeEncoder m_encoder;
   protected double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   
   protected boolean m_limitSwitchDirection=false; //false reverse true forward
-  protected SparkMaxLimitSwitch limitSwitch;
+  protected SparkLimitSwitch limitSwitch;
 
   protected SparkmaxMotor(int deviceID,Boolean limitSwitchDirection, double l_max_output, double l_min_output,boolean l_invert) {
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
@@ -22,9 +22,9 @@ public class SparkmaxMotor  {
     m_pidControllerPos = m_motor.getPIDController();
     m_encoder = m_motor.getEncoder();
     if(m_limitSwitchDirection){
-      limitSwitch = m_motor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+      limitSwitch = m_motor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
     }else{
-      limitSwitch = m_motor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+      limitSwitch = m_motor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
     }
     initializePID(l_max_output,l_min_output);
     m_motor.setInverted(l_invert);

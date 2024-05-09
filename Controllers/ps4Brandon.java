@@ -53,6 +53,10 @@ public class ps4Brandon extends PS4Controller implements PersonalizedController 
     public int enableFineControlButton() {
         return Button.kL1.value;
     }
+    @Override
+    public int enableDriveButton() {
+        return Button.kR1.value;
+    }
 
     @Override
     public boolean povPressed() {
